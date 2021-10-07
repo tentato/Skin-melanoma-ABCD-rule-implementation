@@ -32,7 +32,7 @@ for filename in os.listdir(dir):
 		# cnts, hier = cv2.findContours(img_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 		cnts, hier = cv2.findContours(img_thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
-		# Obtain bounding box, extract and save ROI
+		# Obtain bounding box, extract and save ROI aaaaa
 		if len(cnts) > 0:
 			max_cnt = max(cnts, key = cv2.contourArea)
 			cv2.drawContours(img, cnts, -1, (0,255,0), 2)
