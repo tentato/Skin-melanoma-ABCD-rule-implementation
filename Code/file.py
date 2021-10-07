@@ -25,7 +25,7 @@ for filename in os.listdir(dir):
 		# Gaussian Blur
 		gauss_img=cv2.GaussianBlur(img_gray,(7,7),cv2.BORDER_DEFAULT)
 
-		# OTSU thresh
+		# OTSU threshold
 		otsu_threshold, img_thresh = cv2.threshold(gauss_img, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
 		# Find contours
