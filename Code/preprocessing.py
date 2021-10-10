@@ -9,7 +9,6 @@ import math
 
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.misc
 
 offset_minus = 50
 offset_plus = offset_minus*2
@@ -30,6 +29,9 @@ def show_image_TESTING(img):
 	cv2.imshow("Test", img)
 	cv2.waitKey(0)
 	exit(1)
+
+def save_img(text, img):
+	cv2.imwrite(text, img)
 
 def convert_to_grayscale(img):
 	img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -77,15 +79,17 @@ def bounding_box(contours, img, original_img):
 	return ROI_img, max_contour, rectangle_coordinates
 
 
-dir = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/'
-for filename in os.listdir(dir):
+# dir = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/'
+# for filename in os.listdir(dir):
 
-	# try:
+def main_preprocessing():
+	try:
 		# Close all windows from previous loop
 		cv2.destroyAllWindows()
 
 		# Read image
-		full_path = dir+filename
+		# full_path = dir+filename
+		full_path = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/6644d.bmp'
 		img = read_image(full_path)
 
 		# Log
@@ -116,7 +120,7 @@ for filename in os.listdir(dir):
 		else:
 			print("[INFO] No contours found")
 
-		show_image("ROI image", ROI_img)
+		# show_image("ROI image", ROI_img)
 
 		#Erosion
 		# for i in range(0, 3):
@@ -186,5 +190,7 @@ for filename in os.listdir(dir):
 		
 		#Log
 		print("[INFO] File " + full_path + " processed successfully...\n")
-	# except:
-	# 	print("[ERROR] Something went wrong for "+full_path)
+		return original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates
+	except:
+		print("[ERROR] Something went wrong for "+full_path)
+	
