@@ -3,6 +3,19 @@ import assymetry
 
 import cv2
 
+import numpy as np
+import argparse
+import time
+import os
+import itertools
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+offset_minus = 50
+offset_plus = offset_minus*2
+
 # A, B, C, D = 0
 
 if __name__=="__main__":
@@ -10,9 +23,16 @@ if __name__=="__main__":
 
     # A = assymetry.main()
 
-    cx, cy = preprocessing.find_center(max_contour)
-    cv2.circle(ROI_img, (cx, cy), 7, (0, 255, 0), -1)
-    cv2.circle(original_img, (cx, cy), 7, (0, 255, 0), -1)
+    # Find center
+    [center_x, center_y] = assymetry.find_center(max_contour)
+    center = [center_x, center_y]
+
+    # Check assymetry
+    x, y, w, h = rectangle_coordinates
+    cropped_img_closing = img_closing[y-offset_minus:y-offset_minus+h+offset_plus, x-offset_minus:x-offset_minus+w+offset_plus]
+
+    A = assymetry.check_assymetry(cropped_img_closing)
+    print(A)
 
     preprocessing.show_image("test1", ROI_img)
     preprocessing.show_image("test2", original_img)

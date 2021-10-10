@@ -1,3 +1,4 @@
+import assymetry
 import cv2
 
 import numpy as np
@@ -57,15 +58,24 @@ def find_contours(img):
 	cnts, hier = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 	return cnts, hier
 
-def x_axis(contour):
-	x_axis_len = 0
+def find_line(contour):
+	line_len = 0
 	for pixel1, pixel2 in itertools.combinations(contour, 2):
-		x_axis_len_temp = math.dist(pixel1[0], pixel2[0])
-		if x_axis_len_temp > x_axis_len:
-			x_axis_len = x_axis_len_temp
-			x_axis_pixel1 = pixel1
-			x_axis_pixel2 = pixel2
-	return x_axis_pixel1, x_axis_pixel2
+		line_len_temp = math.dist(pixel1[0], pixel2[0])
+		if line_len_temp > line_len:
+			line_len = line_len_temp
+			line_pixel1 = pixel1
+			line_pixel2 = pixel2
+	return line_pixel1, line_pixel2
+
+def find_line_center(contour, center):
+	line_len = 0
+	for pixel in contour:
+		line_len_temp = math.dist(center, pixel[0])
+		if line_len_temp > line_len:
+			line_len = line_len_temp
+			line_pixel_center = pixel
+	return line_pixel_center
 
 def bounding_box(contours, img, original_img):
 	max_contour = max(contours, key = cv2.contourArea)
@@ -74,26 +84,26 @@ def bounding_box(contours, img, original_img):
 	rectangle_coordinates = x,y,w,h
 	cv2.rectangle(img, (x-offset_minus, y-offset_minus), (x + w + offset_plus, y + h + offset_plus), (0,255,0), 2)
 
-	x_pixel1, x_pixel2 = x_axis(max_contour)
-	original_img = cv2.line(original_img, x_pixel1[0], x_pixel2[0], (0, 255, 0), 2)
+	# [center_x, center_y] = assymetry.find_center(max_contour)
+	# center = [center_x, center_y]
+
+	# x_pixel1, x_pixel2 = find_line(max_contour)
+	# original_img = cv2.line(original_img, x_pixel1[0], x_pixel2[0], (0, 255, 0), 2)
+
+	# x_pixel = find_line_center(max_contour, center)
+	# original_img = cv2.line(original_img, x_pixel[0], center, (0, 255, 0), 2)
 
 	ROI_img = original_img[y-offset_minus:y-offset_minus+h+offset_plus, x-offset_minus:x-offset_minus+w+offset_plus]
 	return ROI_img, max_contour, rectangle_coordinates
 
-def find_center(contour):
-	M = cv2.moments(contour)
-	centerX = int(M["m10"] / M["m00"])
-	centerY = int(M["m01"] / M["m00"])
-	return centerX, centerY
-
 def main_preprocessing():
-	try:
+	# try:
 		# Close all windows from previous loop
 		cv2.destroyAllWindows()
 
 		# Read image
 		# full_path = dir+filename
-		full_path = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/6644d.bmp'
+		full_path = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/kh0598ad.bmp'
 		img = read_image(full_path)
 
 		# Log
@@ -134,6 +144,6 @@ def main_preprocessing():
 		#Log
 		print("[INFO] File " + full_path + " processed successfully...\n")
 		return original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates
-	except:
-		print("[ERROR] Something went wrong for "+full_path)
+	# except:
+	# 	print("[ERROR] Something went wrong for "+full_path)
 	
