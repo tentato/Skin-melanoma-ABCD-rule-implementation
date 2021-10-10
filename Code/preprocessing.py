@@ -16,6 +16,8 @@ offset_plus = offset_minus*2
 gaussian_blur_kernel = (29,29)
 kernel_for_closing = (29, 29)
 
+dir_out = 'C:/Users/alepa/Desktop/Inz/Out_files/'
+
 # Functions
 def read_image(path):
 	img = cv2.imread(path)
@@ -78,9 +80,11 @@ def bounding_box(contours, img, original_img):
 	ROI_img = original_img[y-offset_minus:y-offset_minus+h+offset_plus, x-offset_minus:x-offset_minus+w+offset_plus]
 	return ROI_img, max_contour, rectangle_coordinates
 
-
-dir_out = 'C:/Users/alepa/Desktop/Inz/Out_files/'
-# for filename in os.listdir(dir):
+def find_center(contour):
+	M = cv2.moments(contour)
+	centerX = int(M["m10"] / M["m00"])
+	centerY = int(M["m01"] / M["m00"])
+	return centerX, centerY
 
 def main_preprocessing():
 	try:
@@ -116,7 +120,7 @@ def main_preprocessing():
 		contours, hier = find_contours(img_closing)
 		# Obtain bounding box, extract and save ROI
 		if len(contours) > 0:
-			ROI_img, max_contour, rectangle_coordinates = bounding_box(contours, img_closing, original_img)
+			ROI_img, max_contour, rectangle_coordinates = bounding_box(contours, img_closing, img)
 		else:
 			print("[INFO] No contours found")
 
@@ -126,7 +130,7 @@ def main_preprocessing():
 		save_img(dir_out+"4 Threshold.jpg", img_thresh)
 		save_img(dir_out+"5 Closing img.jpg", img_closing)
 		save_img(dir_out+"6 ROI img.jpg", ROI_img)
-		
+
 		#Log
 		print("[INFO] File " + full_path + " processed successfully...\n")
 		return original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates
