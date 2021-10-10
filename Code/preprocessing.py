@@ -79,7 +79,7 @@ def bounding_box(contours, img, original_img):
 	return ROI_img, max_contour, rectangle_coordinates
 
 
-# dir = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/'
+dir_out = 'C:/Users/alepa/Desktop/Inz/Out_files/'
 # for filename in os.listdir(dir):
 
 def main_preprocessing():
@@ -119,6 +119,13 @@ def main_preprocessing():
 			ROI_img, max_contour, rectangle_coordinates = bounding_box(contours, img_closing, original_img)
 		else:
 			print("[INFO] No contours found")
+
+		save_img(dir_out+"1 Original.jpg", original_img)
+		save_img(dir_out+"2 Gray.jpg", img_gray)
+		save_img(dir_out+"3 Gauss.jpg", gauss_img)
+		save_img(dir_out+"4 Threshold.jpg", img_thresh)
+		save_img(dir_out+"5 Closing img.jpg", img_closing)
+		save_img(dir_out+"6 ROI img.jpg", ROI_img)
 
 		# show_image("ROI image", ROI_img)
 
