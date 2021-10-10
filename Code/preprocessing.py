@@ -15,7 +15,7 @@ offset_minus = 50
 offset_plus = offset_minus*2
 
 gaussian_blur_kernel = (29,29)
-kernel_for_closing = (19, 19)
+kernel_for_closing = (29, 29)
 
 # Functions
 def read_image(path):
@@ -70,8 +70,8 @@ def bounding_box(contours, img, original_img):
 	rectangle_coordinates = x,y,w,h
 	cv2.rectangle(img, (x-offset_minus, y-offset_minus), (x + w + offset_plus, y + h + offset_plus), (0,255,0), 2)
 
-	# x_pixel1, x_pixel2 = x_axis(max_contour)
-	# original_img = cv2.line(original_img, x_pixel1[0], x_pixel2[0], (0, 255, 0), 2)
+	x_pixel1, x_pixel2 = x_axis(max_contour)
+	original_img = cv2.line(original_img, x_pixel1[0], x_pixel2[0], (0, 255, 0), 2)
 
 	ROI_img = original_img[y-offset_minus:y-offset_minus+h+offset_plus, x-offset_minus:x-offset_minus+w+offset_plus]
 	return ROI_img, max_contour, rectangle_coordinates
