@@ -19,16 +19,73 @@ def find_center(contour):
 	centerY = int(Moment["m01"] / Moment["m00"])
 	return centerX, centerY
 
-# TO BE DONE
-# 1. Podziel obraz na 2 części, obróć jedną i porównaj histogramy, potem obróć o 90 stopni i powtórz
-# 2. Obróć cały obraz o 180 stopni i porównaj histogramy, potem obróć obraz o 90 stopni i sprawdź asymetrie 
-def check_assymetry(img):
-    # G_X = cv2.reduce(img, 0 ,cv2.REDUCE_SUM, cv2.CV_32S)
-    # G_X = cv2.reduce(img, 0 ,cv2.REDUCE_SUM, cv2.CV_32S)
-    # G_X = cv2.reduce(img, 1, cv2.cv.CV_REDUCE_SUM)
-    # G_Y = cv2.reduce(img, 1, cv2.cv.CV_REDUCE_SUM)
-    G_X = cv2.reduce(img, 0, cv2.REDUCE_SUM, dtype=cv2.CV_32F)
-    G_Y = cv2.reduce(img, 0, cv2.REDUCE_SUM, dtype=cv2.CV_32F)
+# 1. Find vertical line containing center, function: Ax + By + C = 0, B=0, 
+# 2. 
+# 3.
+# 4.
+# 5.
+# 6.
+# 7.
+# 8.
+# 9.
 
-    compare_val = cv2.compareHist(G_X ,G_Y ,cv2.HISTCMP_CORREL)
-    return compare_val
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def find_bounding_square_ROI(img, rect_coordinates):
+#     x, y, w, h = rect_coordinates
+#     width = math.dist((x, y), (w, y))
+#     height = math.dist((x, y), (x, h))
+
+#     print(width)
+#     print(height)
+
+#     if width > height:
+#         delta = width - height
+#         centered_square_ROI = img[ int(y-delta/2) : int(y-delta/2) + int(h-delta/2), x : x + w]
+#     elif width < height:
+#         delta = height - width
+#         print(delta)
+#         # centered_square_ROI = img[ y : y + h, x : x + w]
+#         centered_square_ROI = img[ y : y + h, x + int(delta/2) : x + int(delta/2) + w - int(delta/2)]
+#     else:
+#         centered_square_ROI = img
+
+#     out_dim = centered_square_ROI.shape
+#     print("Out shape")
+#     print(out_dim[0])
+#     print(out_dim[1])
+#     return centered_square_ROI

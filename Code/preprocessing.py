@@ -18,6 +18,8 @@ gaussian_blur_kernel = (29,29)
 kernel_for_closing = (29, 29)
 
 dir_out = 'C:/Users/alepa/Desktop/Inz/Out_files/'
+full_path = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/kh0598ad.bmp'
+
 
 # Functions
 def read_image(path):
@@ -103,7 +105,6 @@ def main_preprocessing():
 
 		# Read image
 		# full_path = dir+filename
-		full_path = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/kh0598ad.bmp'
 		img = read_image(full_path)
 
 		# Log
@@ -143,6 +144,11 @@ def main_preprocessing():
 
 		#Log
 		print("[INFO] File " + full_path + " processed successfully...\n")
+
+		img_closing = img_closing[rectangle_coordinates[1]-offset_minus:rectangle_coordinates[1]-offset_minus+rectangle_coordinates[3]+offset_plus, rectangle_coordinates[0]-offset_minus:rectangle_coordinates[0]-offset_minus+rectangle_coordinates[2]+offset_plus]
+		contours, hier = find_contours(img_closing)
+		max_contour = max(contours, key = cv2.contourArea)
+
 		return original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates
 	# except:
 	# 	print("[ERROR] Something went wrong for "+full_path)
