@@ -10,6 +10,14 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
+from numpy import ones,vstack
+from numpy.linalg import lstsq
+
+from random import randrange
+
+import matplotlib.pyplot as plt
+
+
 offset_minus = 50
 offset_plus = offset_minus*2
 
@@ -17,7 +25,88 @@ def find_center(contour):
 	Moment = cv2.moments(contour)
 	centerX = int(Moment["m10"] / Moment["m00"])
 	centerY = int(Moment["m01"] / Moment["m00"])
-	return centerX, centerY
+	return [centerX, centerY]
+
+def find_vertical_line(contour, center):
+	x = center[0]
+	# vertical_pixel = 0
+	# for p in contour:
+	# 	px = p[0][0]
+	# 	if px == x:
+	# 		vertical_pixel = p[0]	
+	return x
+
+def find_line(contour, center):
+	p1 = center
+	p2 = contour[2][0]
+	a = (p1[1]-p2[1])/(p1[0]-p2[0]) 	# a = y1 - y2 / x1 - x2
+	b = p1[1] - a * p1[0] 				# b = y - ax	
+	return a, b
+
+def find_random_contour_pixel(contour):
+	rand_i = randrange(len(contour))
+	rand_pixel = contour[rand_i][0]
+	return rand_pixel
+
+def find_perpendicular_line(a, b, pixel):
+	a = 0 								# horizontal line, a=0
+	# a = -1 / a
+	b = pixel[1] - a * pixel[0]
+	return a, b
+
+def find_second_pixel(a, b, pixel, contour):
+	second_pixel = [0, 0]
+	for p in contour:		
+		x = p[0][0]
+		y = p[0][1]
+		val = a * x + b - y
+		if val == 0:
+			print(p[0])
+	print("\n")
+	# print(pixel)
+	# print(second_pixel)
+	return second_pixel
+
+def find_second_horizontal_pixel(pixel, contour):
+	x = pixel[0]
+	y = pixel[1]
+	for p in contour:
+		px = p[0][0]
+		py = p[0][1]
+		if py == y:
+			if px != x:
+				second_horizontal_pixel = p[0]	
+	return second_horizontal_pixel
+
+#####	Main function	#####
+
+def main_assymetry(contour):
+	center_X, center_Y = find_center(contour)
+	center = center_X, center_Y
+	print("Center:")
+	print(center)
+	x_vertical_line = find_vertical_line(contour, center)
+	# a, b = find_line(contour, center)
+	print("Vertical line:")
+	print(x_vertical_line)
+	random_pixel = find_random_contour_pixel(contour)
+	print("Random pixel:")
+	print(random_pixel)
+	second_horizontal_pixel = find_second_horizontal_pixel(random_pixel, contour)
+	print("Second horizontal pixel:")
+	print(second_horizontal_pixel)
+
+
+	# perpendicular_a, perpendicular_b = find_perpendicular_line(a, b, random_pixel)
+	# print(perpendicular_a)
+	# print(perpendicular_b)
+	# second_pixel = find_second_pixel(perpendicular_a, perpendicular_b, random_pixel, contour)
+
+
+
+
+
+
 
 # 1. Find vertical line containing center, function: Ax + By + C = 0, B=0, 
 # 2. 
@@ -89,3 +178,15 @@ def find_center(contour):
 #     print(out_dim[0])
 #     print(out_dim[1])
 #     return centered_square_ROI
+
+
+	# do sprawdzenia czy punkty leza na lini
+	# if a*p1[0]+b - p1[1] == 0:
+	# 	print("p1 nalezy")
+	# else:
+	# 	print("p1 nie nalezy")
+
+	# if a*p2[0]+b - p2[1] == 0:
+	# 	print("p2 nalezy")
+	# else:
+	# 	print("p2 nie nalezy")
