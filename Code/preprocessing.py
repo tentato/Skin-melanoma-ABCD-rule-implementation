@@ -18,8 +18,6 @@ gaussian_blur_kernel = (29,29)
 kernel_for_closing = (29, 29)
 
 dir_out = 'C:/Users/alepa/Desktop/Inz/Out_files/'
-full_path = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/kh0598ad.bmp'
-
 
 # Functions
 def read_image(path):
@@ -98,7 +96,7 @@ def bounding_box(contours, img, original_img):
 	ROI_img = original_img[y-offset_minus:y-offset_minus+h+offset_plus, x-offset_minus:x-offset_minus+w+offset_plus]
 	return ROI_img, max_contour, rectangle_coordinates
 
-def main_preprocessing():
+def main_preprocessing(full_path):
 	# try:
 		# Close all windows from previous loop
 		cv2.destroyAllWindows()
