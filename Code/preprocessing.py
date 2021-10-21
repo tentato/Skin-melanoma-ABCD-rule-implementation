@@ -96,6 +96,12 @@ def bounding_box(contours, img, original_img):
 	ROI_img = original_img[y-offset_minus:y-offset_minus+h+offset_plus, x-offset_minus:x-offset_minus+w+offset_plus]
 	return ROI_img, max_contour, rectangle_coordinates
 
+def find_center(contour):
+	Moment = cv2.moments(contour)
+	centerX = int(Moment["m10"] / Moment["m00"])
+	centerY = int(Moment["m01"] / Moment["m00"])
+	return [centerX, centerY]	
+
 def main_preprocessing(full_path):
 	# try:
 		# Close all windows from previous loop

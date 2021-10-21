@@ -17,12 +17,6 @@ from random import randrange
 
 import matplotlib.pyplot as plt
 
-def find_center(contour):
-	Moment = cv2.moments(contour)
-	centerX = int(Moment["m10"] / Moment["m00"])
-	centerY = int(Moment["m01"] / Moment["m00"])
-	return [centerX, centerY]
-
 def find_vertical_line(center):
 	x = center[0]
 	return x
@@ -127,10 +121,9 @@ def analyze_ratio_array(ratio_array):
 #####	Main function	#####
 #############################
 
-def main_assymetry(contour):
+def main_assymetry(contour, center):
 	A = 2
-	center_X, center_Y = find_center(contour)
-	center = center_X, center_Y
+
 	print("[INFO] Center: ", center)
 
 	x_vertical_line = find_vertical_line(center)
