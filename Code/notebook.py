@@ -1,4 +1,8 @@
+import sys
 
+
+
+print(sys.argv[1])
 
 		# show_image("ROI image", ROI_img)
 

@@ -11,8 +11,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-offset_minus = 50
-offset_plus = offset_minus*2
+offset = 20
 
 gaussian_blur_kernel = (29,29)
 kernel_for_closing = (29, 29)
@@ -74,27 +73,42 @@ def find_line_center(contour, center):
 		line_len_temp = math.dist(center, pixel[0])
 		if line_len_temp > line_len:
 			line_len = line_len_temp
-			line_pixel_center = pixel
+			line_pixel_center = pixel  
 	return line_pixel_center
 
 def bounding_box(contours, img, original_img):
-	max_contour = max(contours, key = cv2.contourArea)
+	max_contour = max(contours, key = cv2.contourArea) 
 	cv2.drawContours(original_img, max_contour, -1, (0,255,0), 2)
 	x,y,w,h = cv2.boundingRect(max_contour)
 	rectangle_coordinates = x,y,w,h
-	cv2.rectangle(img, (x-offset_minus, y-offset_minus), (x + w + offset_plus, y + h + offset_plus), (0,255,0), 2)
+	# cv2.rectangle(original_img, (x-offset, y-offset), (x + w + (offset*2), y + h + (offset*2)), (0,255,0), 2)
+	# cv2.rectangle(img, (x-offset, y-offset), (x + w + (offset*2), y + h + (offset*2)), (0,255,0), 2)
 
-	# [center_x, center_y] = assymetry.find_center(max_contour)
-	# center = [center_x, center_y]
+	# if w>h:
+	# 	off = int((w-h)/2)
+	# 	print("Off ", off)
+	# 	print("w ", w)
+	# 	print("h ", h)
+	# 	print("Rect ", rectangle_coordinates)
+	# 	print("aa ", y-off-offset)
+	# 	print("bb ", y+h+off+offset)
+	# 	print("cc ", x-offset)
+	# 	print("dd ", x+w+offset)
 
-	# x_pixel1, x_pixel2 = find_line(max_contour)
-	# original_img = cv2.line(original_img, x_pixel1[0], x_pixel2[0], (0, 255, 0), 2)
+	# 	ROI_img = original_img[y-offset-off:y+h+offset+off, x-offset:x+w+offset]
+	# 	img = img[y-offset-off:y+h+offset+off, x-offset:x+w+offset]
 
-	# x_pixel = find_line_center(max_contour, center)
-	# original_img = cv2.line(original_img, x_pixel[0], center, (0, 255, 0), 2)
+	# else:
+	# 	# works fine
+	# 	off = int((h-w)/2)
+	# 	ROI_img = original_img[y-offset:y+h+offset, x-offset-off:x+w+offset+off]
+	# 	img = img[y-offset:y+h+offset, x-offset-off:x+w+offset+off]
 
-	ROI_img = original_img[y-offset_minus:y-offset_minus+h+offset_plus, x-offset_minus:x-offset_minus+w+offset_plus]
-	return ROI_img, max_contour, rectangle_coordinates
+	
+
+	ROI_img = original_img[y-offset:y+h+offset, x-offset:x+w+offset]
+
+	return ROI_img, max_contour, rectangle_coordinates, img
 
 def find_center(contour):
 	Moment = cv2.moments(contour)
@@ -135,7 +149,7 @@ def main_preprocessing(full_path):
 		contours, hier = find_contours(img_closing)
 		# Obtain bounding box, extract and save ROI
 		if len(contours) > 0:
-			ROI_img, max_contour, rectangle_coordinates = bounding_box(contours, img_closing, img)
+			ROI_img, max_contour, rectangle_coordinates, img_closing = bounding_box(contours, img_closing, img)
 		else:
 			print("[INFO] No contours found")
 
@@ -149,11 +163,10 @@ def main_preprocessing(full_path):
 		#Log
 		print("[INFO] File " + full_path + " processed successfully...\n")
 
-		img_closing = img_closing[rectangle_coordinates[1]-offset_minus:rectangle_coordinates[1]-offset_minus+rectangle_coordinates[3]+offset_plus, rectangle_coordinates[0]-offset_minus:rectangle_coordinates[0]-offset_minus+rectangle_coordinates[2]+offset_plus]
 		contours, hier = find_contours(img_closing)
 		max_contour = max(contours, key = cv2.contourArea)
 
 		return original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates
 	# except:
-	# 	print("[ERROR] Something went wrong for "+full_path)
+	# 	print("[ERROR] in Preprocessing.py - Something went wrong for " + full_path)
 	

@@ -1,6 +1,7 @@
 import preprocessing
 import assymetry
 import border
+import sys
 
 import cv2
 
@@ -14,7 +15,9 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-path = 'C:/Users/alepa/Desktop/Inz/Skin melanoma/to process/'
+path = 'C:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/'
+
+# full_path = sys.argv[1]
 
 A = 0
 B = 0
@@ -27,7 +30,7 @@ if __name__=="__main__":
         original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates = preprocessing.main_preprocessing(full_path)
         center = preprocessing.find_center(max_contour)
         A = assymetry.main_assymetry(max_contour, center)
-        B = border.main_border(ROI_img, center, max_contour)
+        B = border.main_border(original_img, center, max_contour)
 
         ROI_img = cv2.circle(ROI_img, center, 3, (0, 255, 0), -1)
         preprocessing.show_image("Center", ROI_img)
