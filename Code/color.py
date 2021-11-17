@@ -20,23 +20,28 @@ from skimage.color import rgb2hsv
 #   H = [0.0, 1.0] -> 0, 360
 #   S = [0.0, 1.0] -> 0, 100
 #   v = [0.0, 1.0] -> 0, 100
-### White range = [any, 0:10, 95:100] 
-white_range = [[0, 15], [240, 255]]
+
+###     White range
+white_range = [[0, 10], [95, 100]]
 white_pixels_rate = 0.01
-### Black range = [any, any, 0:45]
-black_range = [0, 45]
+###     Black range
+black_range = [0, 20]
 black_pixels_rate = 0.01
-### Red range = [0:x and 165:180, 125:255, 125:255]
-# red_range = [[0, 10], [160, 180], [125, 255], [125, 255]]
+###     Red range
 red_range = [[0, 20], [320, 360], [50, 100], [50, 100]]
 red_pixels_rate = 0.01
-### Blue-gray = [95:110, 100:150, 100:150]
-### Brown = [10:20, 125:255, 100:255]
-###     Light brown = [10:20, 125:188, 177:255]
-###     Dark brown = [10:20, 188:255, 100:177]
+###     Blue-gray
+blue_gray_range = [[190, 220], [30, 70], [20, 70]]
+blue_gray_pixels_rate = 0.01
+###     Light brown
+light_brown_range = [[20, 40], [25, 75], [55, 90]]
+light_brown_pixels_rate = 0.01
+###     Dark brown
+dark_brown_range = [[20, 40], [25, 100], [20, 55]]
+dark_brown_pixels_rate = 0.01
 
 def find_pixels_inside_contour(img, cnt):
-    pixels_inside_cnt = [] # musi byc jeden, zeby nie wychodzilo poza zakres
+    pixels_inside_cnt = []
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
             if cv2.pointPolygonTest(cnt, (j, i), False) > 0:
@@ -49,6 +54,9 @@ def check_white_color(img, pixels_inside_cnt, pixels_number):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
+        HSV_value[0] = HSV_value[0] * 360
+        HSV_value[1] = HSV_value[1] * 100
+        HSV_value[2] = HSV_value[2] * 100
         if HSV_value[1] >= white_range[0][0] and HSV_value[1] <= white_range[0][1]:
             if HSV_value[2] >= white_range[1][0] and HSV_value[2] <= white_range[1][1]:
                 count = count + 1
@@ -58,7 +66,7 @@ def check_white_color(img, pixels_inside_cnt, pixels_number):
     else:
         white_val = 0
 
-    print("## White:")
+    print("################ White:")
     print("Count: ", count)
     print("White val: ", white_val)
     return white_val
@@ -67,6 +75,9 @@ def check_black_color(img, pixels_inside_cnt, pixels_number):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
+        HSV_value[0] = HSV_value[0] * 360
+        HSV_value[1] = HSV_value[1] * 100
+        HSV_value[2] = HSV_value[2] * 100
         if HSV_value[2] >= black_range[0] and HSV_value[2] <= black_range[1]:
             count = count + 1
 
@@ -75,7 +86,7 @@ def check_black_color(img, pixels_inside_cnt, pixels_number):
     else:
         black_val = 0
 
-    print("## Black:")
+    print("################ Black:")
     print("Count: ", count)
     print("Black val: ", black_val)
     return black_val
@@ -90,7 +101,7 @@ def check_red_color(img, pixels_inside_cnt, pixels_number):
         if HSV_value[0] >= red_range[0][0] and HSV_value[0] <= red_range[0][1]:
             if HSV_value[1] >= red_range[2][0] and HSV_value[1] <= red_range[2][1]:
                 if HSV_value[2] >= red_range[3][0] and HSV_value[2] <= red_range[3][1]: 
-                    ount = count + 1
+                    count = count + 1
             
         if HSV_value[0] >= red_range[1][0] and HSV_value[0] <= red_range[1][1]:
             if HSV_value[1] >= red_range[2][0] and HSV_value[1] <= red_range[2][1]:
@@ -102,45 +113,110 @@ def check_red_color(img, pixels_inside_cnt, pixels_number):
     else:
         red_val = 0
 
-    print("## Red:")
+    print("################ Red:")
     print("Count: ", count)
     print("Red val: ", red_val)
     print("All pix: ", pixels_number)
     return red_val
 
 def check_blue_gray_color(img, pixels_inside_cnt, pixels_number):
-    blue_gray_val = 0
+    count = 0
+    for pixel in pixels_inside_cnt:
+        HSV_value = img[pixel[1], pixel[0]]
+        HSV_value[0] = HSV_value[0] * 360
+        HSV_value[1] = HSV_value[1] * 100
+        HSV_value[2] = HSV_value[2] * 100
+        if HSV_value[0] >= blue_gray_range[0][0] and HSV_value[0] <= blue_gray_range[0][1]:
+            if HSV_value[1] >= blue_gray_range[1][0] and HSV_value[1] <= blue_gray_range[1][1]:
+                if HSV_value[2] >= blue_gray_range[2][0] and HSV_value[2] <= blue_gray_range[2][1]: 
+                    count = count + 1
+
+    if count >= pixels_number*blue_gray_pixels_rate:
+        blue_gray_val = 1
+    else:
+        blue_gray_val = 0
+
+    print("################ Blue-gray:")
+    print("Count: ", count)
+    print("Blue-gray val: ", blue_gray_val)
+    print("All pix: ", pixels_number)
     return blue_gray_val
 
 def check_light_brown_color(img, pixels_inside_cnt, pixels_number):
-    light_brown = 0
-    return light_brown
+    count = 0
+    for pixel in pixels_inside_cnt:
+        HSV_value = img[pixel[1], pixel[0]]
+        HSV_value[0] = HSV_value[0] * 360
+        HSV_value[1] = HSV_value[1] * 100
+        HSV_value[2] = HSV_value[2] * 100
+        if HSV_value[0] >= light_brown_range[0][0] and HSV_value[0] <= light_brown_range[0][1]:
+            if HSV_value[1] >= light_brown_range[1][0] and HSV_value[1] <= light_brown_range[1][1]:
+                if HSV_value[2] >= light_brown_range[2][0] and HSV_value[2] <= light_brown_range[2][1]:
+                    count = count + 1
+
+    if count >= pixels_number*light_brown_pixels_rate:
+        light_brown_val = 1
+    else:
+        light_brown_val = 0
+
+    print("################ Light brown:")
+    print("Count: ", count)
+    print("Light brown val: ", light_brown_val)
+    print("All pix: ", pixels_number)
+    return light_brown_val
 
 def check_dark_brown_color(img, pixels_inside_cnt, pixels_number):
-    dark_brown_val = 0
+    count = 0
+    for pixel in pixels_inside_cnt:
+        HSV_value = img[pixel[1], pixel[0]]
+        HSV_value[0] = HSV_value[0] * 360
+        HSV_value[1] = HSV_value[1] * 100
+        HSV_value[2] = HSV_value[2] * 100
+        if HSV_value[0] >= dark_brown_range[0][0] and HSV_value[0] <= dark_brown_range[0][1]:
+            if HSV_value[1] >= dark_brown_range[1][0] and HSV_value[1] <= dark_brown_range[1][1]:
+                if HSV_value[2] >= dark_brown_range[2][0] and HSV_value[2] <= dark_brown_range[2][1]:
+                    count = count + 1
+
+    if count >= pixels_number*dark_brown_pixels_rate:
+        dark_brown_val = 1
+    else:
+        dark_brown_val = 0
+
+    print("################ Dark brown:")
+    print("Count: ", count)
+    print("Dark brown val: ", dark_brown_val)
+    print("All pix: ", pixels_number)
     return dark_brown_val
 
 def main_color(img, cnt):
     C = 0.0
-    # print(img[100, 100])
-    # img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)    # This is not converting color type properly
+
+    pixels_inside_cnt, pixels_number = find_pixels_inside_contour(img, cnt)
 
     # Convert to RGB
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    print(img[100, 100])
 
     # Concert to HSV
     img = rgb2hsv(img)
-    print(img[100, 100])
 
-    pixels_inside_cnt, pixels_number = find_pixels_inside_contour(img, cnt)
-    # C = C + check_white_color(img, pixels_inside_cnt, pixels_number)
-    # C = C + check_black_color(img, pixels_inside_cnt, pixels_number)
-    C = C + check_red_color(img, pixels_inside_cnt, pixels_number)
-    C = C + check_blue_gray_color(img, pixels_inside_cnt, pixels_number)
-    C = C + check_light_brown_color(img, pixels_inside_cnt, pixels_number)
-    C = C + check_dark_brown_color(img, pixels_inside_cnt, pixels_number)
+    copy_img = img.copy()
+    white = check_white_color(copy_img, pixels_inside_cnt, pixels_number)
 
-    C = C * 0.5
+    copy_img = img.copy()
+    black = check_black_color(copy_img, pixels_inside_cnt, pixels_number)
+
+    copy_img = img.copy()
+    blue_gray = check_blue_gray_color(copy_img, pixels_inside_cnt, pixels_number)
+
+    copy_img = img.copy()
+    red = check_red_color(copy_img, pixels_inside_cnt, pixels_number)
+
+    copy_img = img.copy()
+    light_brown = check_light_brown_color(copy_img, pixels_inside_cnt, pixels_number)
+
+    copy_img = img.copy()
+    dark_brown = check_dark_brown_color(copy_img, pixels_inside_cnt, pixels_number)
+
+    C = (white + black + red + blue_gray + light_brown + dark_brown) * 0.5
     print(C)
     return C
