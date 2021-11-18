@@ -24,17 +24,25 @@ path = 'C:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/'
 A = 0
 B = 0
 C = 0
-D = 0
+
+#############################
+#####	Main function	#####
+#############################
 
 if __name__=="__main__":
     for file in os.listdir(path):
         full_path = path + file
         original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates = preprocessing.main_preprocessing(full_path)
         center = preprocessing.find_center(max_contour)
-        # A = assymetry.main_assymetry(max_contour, center)
+        A = assymetry.main_assymetry(max_contour, center, original_img)
         # B = border.main_border(original_img, center, max_contour)
         C = color.main_color(original_img, max_contour)
 
 
         # ROI_img = cv2.circle(ROI_img, center, 3, (0, 255, 0), -1)
         # preprocessing.show_image("Center", ROI_img)
+        print("[Results] A - ", A)
+        print("[Results] B - ", B)
+        print("[Results] C - ", C)
+        print("[Results] A + B + C - ", A + B + C)
+        print("")

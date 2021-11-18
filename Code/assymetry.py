@@ -7,6 +7,10 @@ import os
 import itertools
 import math
 
+import numpy
+
+import preprocessing
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -105,13 +109,26 @@ def find_length_ratio(x, pixel1, pixel2):
 		ratio = length1 / length2
 	return ratio
 
+def find_max_distance(cnt):
+	max_dist = 0
+
+	for p1 in cnt:
+		for p2 in cnt:
+			dist = math.sqrt( (p2[0][0] - p1[0][0])**2 + (p2[0][1] - p1[0][1])**2 )
+			if dist > max_dist:
+				max_dist = dist
+				pixel1 = p1[0]
+				pixel2 = p2[0]
+
+	return pixel1, pixel2
+
 def analyze_ratio_array(ratio_array):
 	count = 0
 	for ratio in ratio_array:
-		if ratio > 0.75:
+		if ratio > 0.70:
 			count += 1
 	
-	if count > len(ratio_array)*0.75:	
+	if count > len(ratio_array)*0.70:	
 		A = 1
 	else:
 		A = 0
@@ -121,67 +138,93 @@ def analyze_ratio_array(ratio_array):
 #####	Main function	#####
 #############################
 
-def main_assymetry(contour, center):
+def main_assymetry(contour, center, img):
 	A = 2
 
-	print("[INFO] Center: ", center)
+	print("[INFO] ASSYMETRY STARTED")
+
+	### Peparing 
+	# print("[INFO] Center: ", center)
 
 	x_vertical_line = find_vertical_line(center)
-	print("[INFO] Vertical line: ", x_vertical_line)
+	# print("[INFO] Vertical line: ", x_vertical_line)
 	y_horizontal_line = find_horizontal_line(center)
-	print("[INFO] Horizontal line: ", y_horizontal_line)
+	# print("[INFO] Horizontal line: ", y_horizontal_line)
 
-	### Vertical
+	### Rotating image
+	copy_contour = contour.copy()
 
-	min_y_pixel, max_y_pixel = find_extreme_vertical_pixels(x_vertical_line, contour)	
-	print("[INFO] min y, max y: ", min_y_pixel[1], max_y_pixel[1])
+	pixel1, pixel2 = find_max_distance(copy_contour)
+	a = ((pixel1[1]*-1)-(pixel2[1]*-1))/(pixel1[0]-pixel2[0])
+	# print("a= ", a)
+	alpha = math.atan(a)
+	alpha = alpha * 57.3 # radiany na stopnie
+	# print("alpha= ", alpha)
+
+	if alpha < 90:
+		alpha = 90 - alpha
+		copy_contour = preprocessing.rotate_contour(copy_contour, -alpha, center)
+	else:
+		alpha = alpha - 90
+		copy_contour = preprocessing.rotate_contour(copy_contour, alpha, center)
+	# print("alpha= ", alpha)
+
+
+	### Vertical symetry check
+	min_y_pixel, max_y_pixel = find_extreme_vertical_pixels(x_vertical_line, copy_contour)	
+	# print("[INFO] min y, max y: ", min_y_pixel[1], max_y_pixel[1])
 	current_y = min_y_pixel[1]
 
 	next_loop_possible = True
 	ratio_array = []
 	while(next_loop_possible):
-		print("[INFO] Current Y: ", current_y)
+		# print("[INFO] Current Y: ", current_y)
 		current_y, next_loop_possible = find_next_line_point(current_y, max_y_pixel[1])
-		print("[INFO] Current Y - next: ", current_y)
-		next_pixel = [find_min_for_current(current_y, contour), current_y]
-		print("[INFO] Next pixel: ", next_pixel)
+		# print("[INFO] Current Y - next: ", current_y)
+		next_pixel = [find_min_for_current(current_y, copy_contour), current_y]
+		# print("[INFO] Next pixel: ", next_pixel)
 
-		second_horizontal_pixel = [find_max_for_current(current_y, contour), current_y]
-		print("[INFO] Second horizontal pixel: ", second_horizontal_pixel)
+		second_horizontal_pixel = [find_max_for_current(current_y, copy_contour), current_y]
+		# print("[INFO] Second horizontal pixel: ", second_horizontal_pixel)
 		ratio = find_length_ratio(x_vertical_line, next_pixel, second_horizontal_pixel)
-		print("[INFO] Ratio: ", ratio)
+		# print("[INFO] Ratio: ", ratio)
 		ratio_array.append(ratio)
 
 	a_vertical = analyze_ratio_array(ratio_array)
+	# print("[INFO] A vertical: ", a_vertical)
 	A = A - a_vertical
 	print("[INFO] Ma after vertical check: ", A)
 
-	### Horizontal
 
-	min_x_pixel, max_x_pixel = find_extreme_horizontal_pixels(y_horizontal_line, contour)	
-	print("[INFO] min x, max x: ", min_x_pixel[1], max_x_pixel[1])
+	### Horizontal symetry check
+	min_x_pixel, max_x_pixel = find_extreme_horizontal_pixels(y_horizontal_line, copy_contour)	
+	# print("[INFO] min x, max x: ", min_x_pixel[1], max_x_pixel[1])
 	current_x = min_x_pixel[1]
 
 	next_loop_possible = True
 	ratio_array = []
 	while(next_loop_possible):
-		print("[INFO] Current X: ", current_x)
+		# print("[INFO] Current X: ", current_x)
 		current_x, next_loop_possible = find_next_line_point(current_x, max_x_pixel[1])
-		print("[INFO] Current X - next: ", current_y)
-		next_pixel = [find_min_for_current(current_x, contour), current_x]
-		print("[INFO] Next pixel: ", next_pixel)
+		# print("[INFO] Current X - next: ", current_y)
+		next_pixel = [find_min_for_current(current_x, copy_contour), current_x]
+		# print("[INFO] Next pixel: ", next_pixel)
 
-		second_horizontal_pixel = [find_max_for_current(current_x, contour), current_x]
-		print("[INFO] Second horizontal pixel: ", second_horizontal_pixel)
+		second_horizontal_pixel = [find_max_for_current(current_x, copy_contour), current_x]
+		# print("[INFO] Second horizontal pixel: ", second_horizontal_pixel)
 		ratio = find_length_ratio(y_horizontal_line, next_pixel, second_horizontal_pixel)
-		print("[INFO] Ratio: ", ratio)
+		# print("[INFO] Ratio: ", ratio)
 		ratio_array.append(ratio)
 
 	a_horizontal = analyze_ratio_array(ratio_array)
+	print("[INFO] A horizontal: ", a_horizontal)
 	A = A - a_horizontal
-	print("[INFO] Ma after horizontal check: ", A)
+	# print("[INFO] Ma after horizontal check: ", A)
 
 	A = A*1.3
-	print("[INFO] A after vertical and horizontal check: ", A)
+	print("[INFO] A after horizontal check: ", A)
+
+	print("[INFO] Assymetry finished\n")
+
 
 	return A

@@ -11,6 +11,20 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
+import cv2
+import numpy as np
+import argparse
+import time
+import os
+import itertools
+import math
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy import ones,vstack
+from numpy.linalg import lstsq
+from random import randrange
+import matplotlib.pyplot as plt
+
 offset = 20
 
 gaussian_blur_kernel = (29,29)
@@ -116,9 +130,50 @@ def find_center(contour):
 	centerY = int(Moment["m01"] / Moment["m00"])
 	return [centerX, centerY]	
 
+def cartesian2polar(x, y):
+    theta = np.arctan2(y, x)
+    rho = np.hypot(x, y)
+    return theta, rho
+
+def polar2cartesian(theta, rho):
+    x = rho * np.cos(theta)
+    y = rho * np.sin(theta)
+    return x, y	
+
+def rotate_contour(contour, angle, center):
+    cx = center[0]
+    cy = center[1]
+
+    contour_norm = contour - [cx, cy]
+    
+    coordinates = contour_norm[:, 0, :]
+    xs, ys = coordinates[:, 0], coordinates[:, 1]
+    thetas, rhos = cartesian2polar(xs, ys)
+    
+    thetas = np.rad2deg(thetas)
+    thetas = (thetas + angle) % 360
+    thetas = np.deg2rad(thetas)
+    
+    xs, ys = polar2cartesian(thetas, rhos)
+    
+    contour_norm[:, 0, 0] = xs
+    contour_norm[:, 0, 1] = ys
+
+    contour_rotated = contour_norm + [cx, cy]
+    contour_rotated = contour_rotated.astype(np.int32)
+
+    return contour_rotated
+
+#############################
+#####	Main function	#####
+#############################
+
 def main_preprocessing(full_path):
 	# try:
 		# Close all windows from previous loop
+
+		print("[INFO] PREPROCESSING STARTED")
+		print("[INFO] Starting processing " + full_path + " file...")
 		cv2.destroyAllWindows()
 
 		# Read image

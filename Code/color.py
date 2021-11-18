@@ -66,9 +66,8 @@ def check_white_color(img, pixels_inside_cnt, pixels_number):
     else:
         white_val = 0
 
-    print("################ White:")
-    print("Count: ", count)
-    print("White val: ", white_val)
+    print("[INFO] All pixels: ", pixels_number)
+    print("[INFO] White value: ", count)
     return white_val
 
 def check_black_color(img, pixels_inside_cnt, pixels_number):
@@ -86,9 +85,7 @@ def check_black_color(img, pixels_inside_cnt, pixels_number):
     else:
         black_val = 0
 
-    print("################ Black:")
-    print("Count: ", count)
-    print("Black val: ", black_val)
+    print("[INFO] Black value: ", count)
     return black_val
 
 def check_red_color(img, pixels_inside_cnt, pixels_number):
@@ -113,10 +110,7 @@ def check_red_color(img, pixels_inside_cnt, pixels_number):
     else:
         red_val = 0
 
-    print("################ Red:")
-    print("Count: ", count)
-    print("Red val: ", red_val)
-    print("All pix: ", pixels_number)
+    print("[INFO] Red value: ", count)
     return red_val
 
 def check_blue_gray_color(img, pixels_inside_cnt, pixels_number):
@@ -136,10 +130,7 @@ def check_blue_gray_color(img, pixels_inside_cnt, pixels_number):
     else:
         blue_gray_val = 0
 
-    print("################ Blue-gray:")
-    print("Count: ", count)
-    print("Blue-gray val: ", blue_gray_val)
-    print("All pix: ", pixels_number)
+    print("[INFO] Blue-gray value: ", count)
     return blue_gray_val
 
 def check_light_brown_color(img, pixels_inside_cnt, pixels_number):
@@ -159,10 +150,7 @@ def check_light_brown_color(img, pixels_inside_cnt, pixels_number):
     else:
         light_brown_val = 0
 
-    print("################ Light brown:")
-    print("Count: ", count)
-    print("Light brown val: ", light_brown_val)
-    print("All pix: ", pixels_number)
+    print("[INFO] Light brown value: ", count)
     return light_brown_val
 
 def check_dark_brown_color(img, pixels_inside_cnt, pixels_number):
@@ -182,14 +170,17 @@ def check_dark_brown_color(img, pixels_inside_cnt, pixels_number):
     else:
         dark_brown_val = 0
 
-    print("################ Dark brown:")
-    print("Count: ", count)
-    print("Dark brown val: ", dark_brown_val)
-    print("All pix: ", pixels_number)
+    print("[INFO] Dark brown value: ", count)
     return dark_brown_val
+
+#############################
+#####	Main function	#####
+#############################
 
 def main_color(img, cnt):
     C = 0.0
+    print("[INFO] COLOR RECOGNITION STARTED")
+
 
     pixels_inside_cnt, pixels_number = find_pixels_inside_contour(img, cnt)
 
@@ -218,5 +209,5 @@ def main_color(img, cnt):
     dark_brown = check_dark_brown_color(copy_img, pixels_inside_cnt, pixels_number)
 
     C = (white + black + red + blue_gray + light_brown + dark_brown) * 0.5
-    print(C)
+    print("[INFO] COLOR RECOGNITION FINISHED\n")
     return C
