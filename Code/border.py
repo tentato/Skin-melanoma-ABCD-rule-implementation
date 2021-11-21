@@ -44,7 +44,7 @@ def find_avg_in(pixel, img):
 #############################
 
 def main_border(img, center, contours):
-    B = 0
+    B = 0.0
     angle = 45
     for i in range(7):
         im_copy = img.copy()

@@ -50,7 +50,7 @@ def find_pixels_inside_contour(img, cnt):
     pixels_number = len(pixels_inside_cnt)
     return pixels_inside_cnt, pixels_number
 
-def check_white_color(img, pixels_inside_cnt, pixels_number):
+def check_white_color(img, pixels_inside_cnt, pixels_number, log):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
@@ -66,11 +66,13 @@ def check_white_color(img, pixels_inside_cnt, pixels_number):
     else:
         white_val = 0
 
+    log.write("[INFO] All pixels: {}\n".format(pixels_number))
     print("[INFO] All pixels: ", pixels_number)
+    log.write("[INFO] White value: {}\n".format(count))
     print("[INFO] White value: ", count)
     return white_val
 
-def check_black_color(img, pixels_inside_cnt, pixels_number):
+def check_black_color(img, pixels_inside_cnt, pixels_number, log):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
@@ -85,10 +87,11 @@ def check_black_color(img, pixels_inside_cnt, pixels_number):
     else:
         black_val = 0
 
+    log.write("[INFO] Black value: {}\n".format(count))
     print("[INFO] Black value: ", count)
     return black_val
 
-def check_red_color(img, pixels_inside_cnt, pixels_number):
+def check_red_color(img, pixels_inside_cnt, pixels_number, log):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
@@ -110,10 +113,11 @@ def check_red_color(img, pixels_inside_cnt, pixels_number):
     else:
         red_val = 0
 
+    log.write("[INFO] Red value: {}\n".format(count))
     print("[INFO] Red value: ", count)
     return red_val
 
-def check_blue_gray_color(img, pixels_inside_cnt, pixels_number):
+def check_blue_gray_color(img, pixels_inside_cnt, pixels_number, log):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
@@ -130,10 +134,11 @@ def check_blue_gray_color(img, pixels_inside_cnt, pixels_number):
     else:
         blue_gray_val = 0
 
+    log.write("[INFO] Blue-gray value: {}\n".format(count))
     print("[INFO] Blue-gray value: ", count)
     return blue_gray_val
 
-def check_light_brown_color(img, pixels_inside_cnt, pixels_number):
+def check_light_brown_color(img, pixels_inside_cnt, pixels_number, log):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
@@ -150,10 +155,11 @@ def check_light_brown_color(img, pixels_inside_cnt, pixels_number):
     else:
         light_brown_val = 0
 
+    log.write("[INFO] Light brown value: {}\n".format(count))
     print("[INFO] Light brown value: ", count)
     return light_brown_val
 
-def check_dark_brown_color(img, pixels_inside_cnt, pixels_number):
+def check_dark_brown_color(img, pixels_inside_cnt, pixels_number, log):
     count = 0
     for pixel in pixels_inside_cnt:
         HSV_value = img[pixel[1], pixel[0]]
@@ -170,6 +176,7 @@ def check_dark_brown_color(img, pixels_inside_cnt, pixels_number):
     else:
         dark_brown_val = 0
 
+    log.write("[INFO] Dark brown value: {}\n".format(count))
     print("[INFO] Dark brown value: ", count)
     return dark_brown_val
 
@@ -177,8 +184,9 @@ def check_dark_brown_color(img, pixels_inside_cnt, pixels_number):
 #####	Main function	#####
 #############################
 
-def main_color(img, cnt):
+def main_color(img, cnt, log):
     C = 0.0
+    log.write("[INFO] COLOR RECOGNITION STARTED\n")
     print("[INFO] COLOR RECOGNITION STARTED")
 
 
@@ -191,23 +199,24 @@ def main_color(img, cnt):
     img = rgb2hsv(img)
 
     copy_img = img.copy()
-    white = check_white_color(copy_img, pixels_inside_cnt, pixels_number)
+    white = check_white_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
     copy_img = img.copy()
-    black = check_black_color(copy_img, pixels_inside_cnt, pixels_number)
+    black = check_black_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
     copy_img = img.copy()
-    blue_gray = check_blue_gray_color(copy_img, pixels_inside_cnt, pixels_number)
+    blue_gray = check_blue_gray_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
     copy_img = img.copy()
-    red = check_red_color(copy_img, pixels_inside_cnt, pixels_number)
+    red = check_red_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
     copy_img = img.copy()
-    light_brown = check_light_brown_color(copy_img, pixels_inside_cnt, pixels_number)
+    light_brown = check_light_brown_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
     copy_img = img.copy()
-    dark_brown = check_dark_brown_color(copy_img, pixels_inside_cnt, pixels_number)
+    dark_brown = check_dark_brown_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
     C = (white + black + red + blue_gray + light_brown + dark_brown) * 0.5
     print("[INFO] COLOR RECOGNITION FINISHED\n")
+    log.write("[INFO] COLOR RECOGNITION FINISHED\n\n")
     return C

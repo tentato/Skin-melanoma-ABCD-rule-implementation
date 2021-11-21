@@ -138,9 +138,10 @@ def analyze_ratio_array(ratio_array):
 #####	Main function	#####
 #############################
 
-def main_assymetry(contour, center, img):
+def main_assymetry(contour, center, log):
 	A = 2
 
+	log.write("[INFO] ASSYMETRY STARTED\n")
 	print("[INFO] ASSYMETRY STARTED")
 
 	### Peparing 
@@ -193,6 +194,7 @@ def main_assymetry(contour, center, img):
 	a_vertical = analyze_ratio_array(ratio_array)
 	# print("[INFO] A vertical: ", a_vertical)
 	A = A - a_vertical
+	log.write("[INFO] Ma after vertical check: {}\n".format(A))
 	print("[INFO] Ma after vertical check: ", A)
 
 
@@ -217,14 +219,16 @@ def main_assymetry(contour, center, img):
 		ratio_array.append(ratio)
 
 	a_horizontal = analyze_ratio_array(ratio_array)
+	log.write("[INFO] A horizontal: {}\n".format(a_horizontal))
 	print("[INFO] A horizontal: ", a_horizontal)
 	A = A - a_horizontal
 	# print("[INFO] Ma after horizontal check: ", A)
 
 	A = A*1.3
+	log.write("[INFO] A after horizontal check: {}\n".format(A))
 	print("[INFO] A after horizontal check: ", A)
 
+	log.write("[INFO] Assymetry finished\n\n")
 	print("[INFO] Assymetry finished\n")
-
 
 	return A

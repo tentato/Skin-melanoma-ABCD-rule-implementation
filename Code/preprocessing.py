@@ -168,11 +168,12 @@ def rotate_contour(contour, angle, center):
 #####	Main function	#####
 #############################
 
-def main_preprocessing(full_path):
+def main_preprocessing(full_path, log):
 	# try:
 		# Close all windows from previous loop
-
+		log.write("[INFO] PREPROCESSING STARTED\n")
 		print("[INFO] PREPROCESSING STARTED")
+		log.write("[INFO] Starting processing " + full_path + " file...\n")
 		print("[INFO] Starting processing " + full_path + " file...")
 		cv2.destroyAllWindows()
 
@@ -181,6 +182,7 @@ def main_preprocessing(full_path):
 		img = read_image(full_path)
 
 		# Log
+		log.write("[INFO] Processing" + full_path + "\n")
 		print("[INFO] Processing " + full_path)
 
 		# Copy image
@@ -206,6 +208,7 @@ def main_preprocessing(full_path):
 		if len(contours) > 0:
 			ROI_img, max_contour, rectangle_coordinates, img_closing = bounding_box(contours, img_closing, img)
 		else:
+			log.write("[INFO] No contours found\n")
 			print("[INFO] No contours found")
 
 		save_img(dir_out+"1 Original.jpg", original_img)
@@ -216,6 +219,7 @@ def main_preprocessing(full_path):
 		save_img(dir_out+"6 ROI img.jpg", ROI_img)
 
 		#Log
+		log.write("[INFO] File " + full_path + " processed successfully...\n\n")
 		print("[INFO] File " + full_path + " processed successfully...\n")
 
 		contours, hier = find_contours(img_closing)
