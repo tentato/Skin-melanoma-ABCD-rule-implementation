@@ -1,26 +1,11 @@
 [INFO] PREPROCESSING STARTED
-[INFO] Starting processing C:\Users\alepa\Desktop\Inz\Skin_melanoma\to_process\asfdaf.bmp file...
-[INFO] ProcessingC:\Users\alepa\Desktop\Inz\Skin_melanoma\to_process\asfdaf.bmp
-[INFO] File C:\Users\alepa\Desktop\Inz\Skin_melanoma\to_process\asfdaf.bmp processed successfully...
+[INFO] Starting processing C:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/6052d.bmp file...
+[INFO] ProcessingC:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/6052d.bmp
+[INFO] File C:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/6052d.bmp processed successfully...
 
 [INFO] ASSYMETRY STARTED
-[INFO] Ma after vertical check: 1
-[INFO] A horizontal: 1
-[INFO] A after horizontal check: 0.0
+[INFO] Ma after vertical check: 2
+[INFO] A horizontal: 0
+[INFO] A after horizontal check: 2.6
 [INFO] Assymetry finished
 
-[INFO] COLOR RECOGNITION STARTED
-[INFO] All pixels: 188934
-[INFO] White value: 0
-[INFO] Black value: 44416
-[INFO] Blue-gray value: 0
-[INFO] Red value: 39775
-[INFO] Light brown value: 0
-[INFO] Dark brown value: 0
-[INFO] COLOR RECOGNITION FINISHED
-
-[Results] A=0.0
-[Results] B=0.0
-[Results] C=1.0
-[Results] D=2.5
-[Final result] Benign melanocytic lesion... TDS = 3.5
