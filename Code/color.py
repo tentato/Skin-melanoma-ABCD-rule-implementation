@@ -1,19 +1,4 @@
-import preprocessing
-import assymetry
-import border
-import sys
-
 import cv2
-
-import numpy as np
-import argparse
-import time
-import os
-import itertools
-import math
-
-import numpy as np
-import matplotlib.pyplot as plt
 from skimage.color import rgb2hsv
 
 ### HSV values ###
@@ -31,7 +16,7 @@ black_pixels_rate = 0.01
 red_range = [[0, 20], [320, 360], [50, 100], [50, 100]]
 red_pixels_rate = 0.01
 ###     Blue-gray
-blue_gray_range = [[190, 220], [30, 70], [20, 70]]
+blue_gray_range = [[190, 220], [30, 100], [20, 100]]
 blue_gray_pixels_rate = 0.01
 ###     Light brown
 light_brown_range = [[20, 40], [25, 75], [55, 90]]
@@ -185,38 +170,44 @@ def check_dark_brown_color(img, pixels_inside_cnt, pixels_number, log):
 #############################
 
 def main_color(img, cnt, log):
-    C = 0.0
-    log.write("[INFO] COLOR RECOGNITION STARTED\n")
-    print("[INFO] COLOR RECOGNITION STARTED")
+    try:
+        C = 0.0
+        log.write("[INFO] COLOR ANALYZING STARTED\n")
+        print("[INFO] COLOR ANALYZING STARTED")
 
+        pixels_inside_cnt, pixels_number = find_pixels_inside_contour(img, cnt)
 
-    pixels_inside_cnt, pixels_number = find_pixels_inside_contour(img, cnt)
+        # Convert to RGB
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    # Convert to RGB
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        # Concert to HSV
+        img = rgb2hsv(img)
 
-    # Concert to HSV
-    img = rgb2hsv(img)
+        copy_img = img.copy()
+        white = check_white_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
-    copy_img = img.copy()
-    white = check_white_color(copy_img, pixels_inside_cnt, pixels_number, log)
+        copy_img = img.copy()
+        black = check_black_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
-    copy_img = img.copy()
-    black = check_black_color(copy_img, pixels_inside_cnt, pixels_number, log)
+        copy_img = img.copy()
+        blue_gray = check_blue_gray_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
-    copy_img = img.copy()
-    blue_gray = check_blue_gray_color(copy_img, pixels_inside_cnt, pixels_number, log)
+        copy_img = img.copy()
+        red = check_red_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
-    copy_img = img.copy()
-    red = check_red_color(copy_img, pixels_inside_cnt, pixels_number, log)
+        copy_img = img.copy()
+        light_brown = check_light_brown_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
-    copy_img = img.copy()
-    light_brown = check_light_brown_color(copy_img, pixels_inside_cnt, pixels_number, log)
+        copy_img = img.copy()
+        dark_brown = check_dark_brown_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
-    copy_img = img.copy()
-    dark_brown = check_dark_brown_color(copy_img, pixels_inside_cnt, pixels_number, log)
+        C = (white + black + red + blue_gray + light_brown + dark_brown) * 0.5
+        log.write("[INFO] C after all checks: {}\n".format(C))
+        print("[INFO] C after all checks: ", C)
 
-    C = (white + black + red + blue_gray + light_brown + dark_brown) * 0.5
-    print("[INFO] COLOR RECOGNITION FINISHED\n")
-    log.write("[INFO] COLOR RECOGNITION FINISHED\n\n")
-    return C
+        log.write("[INFO] Color analyzing finished\n\n")
+        print("[INFO] Color analyzing finished\n")
+        return C
+    except:
+	    log.write("[ERROR] Unhandled color analyzing error - something went wrong\n")
+	    print("[ERROR] Unhandled color analyzing error - something went wrong")

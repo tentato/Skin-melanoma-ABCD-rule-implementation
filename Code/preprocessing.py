@@ -95,30 +95,6 @@ def bounding_box(contours, img, original_img):
 	cv2.drawContours(original_img, max_contour, -1, (0,255,0), 2)
 	x,y,w,h = cv2.boundingRect(max_contour)
 	rectangle_coordinates = x,y,w,h
-	# cv2.rectangle(original_img, (x-offset, y-offset), (x + w + (offset*2), y + h + (offset*2)), (0,255,0), 2)
-	# cv2.rectangle(img, (x-offset, y-offset), (x + w + (offset*2), y + h + (offset*2)), (0,255,0), 2)
-
-	# if w>h:
-	# 	off = int((w-h)/2)
-	# 	print("Off ", off)
-	# 	print("w ", w)
-	# 	print("h ", h)
-	# 	print("Rect ", rectangle_coordinates)
-	# 	print("aa ", y-off-offset)
-	# 	print("bb ", y+h+off+offset)
-	# 	print("cc ", x-offset)
-	# 	print("dd ", x+w+offset)
-
-	# 	ROI_img = original_img[y-offset-off:y+h+offset+off, x-offset:x+w+offset]
-	# 	img = img[y-offset-off:y+h+offset+off, x-offset:x+w+offset]
-
-	# else:
-	# 	# works fine
-	# 	off = int((h-w)/2)
-	# 	ROI_img = original_img[y-offset:y+h+offset, x-offset-off:x+w+offset+off]
-	# 	img = img[y-offset:y+h+offset, x-offset-off:x+w+offset+off]
-
-	
 
 	ROI_img = original_img[y-offset:y+h+offset, x-offset:x+w+offset]
 
@@ -169,7 +145,7 @@ def rotate_contour(contour, angle, center):
 #############################
 
 def main_preprocessing(full_path, log):
-	# try:
+	try:
 		# Close all windows from previous loop
 		log.write("[INFO] PREPROCESSING STARTED\n")
 		print("[INFO] PREPROCESSING STARTED")
@@ -182,7 +158,7 @@ def main_preprocessing(full_path, log):
 		img = read_image(full_path)
 
 		# Log
-		log.write("[INFO] Processing" + full_path + "\n")
+		log.write("[INFO] Processing " + full_path + "\n")
 		print("[INFO] Processing " + full_path)
 
 		# Copy image
@@ -219,13 +195,16 @@ def main_preprocessing(full_path, log):
 		save_img(dir_out+"6 ROI img.jpg", ROI_img)
 
 		#Log
-		log.write("[INFO] File " + full_path + " processed successfully...\n\n")
-		print("[INFO] File " + full_path + " processed successfully...\n")
+		log.write("[INFO] File " + full_path + " processed successfully...\n")
+		print("[INFO] File " + full_path + " processed successfully...")
 
 		contours, hier = find_contours(img_closing)
 		max_contour = max(contours, key = cv2.contourArea)
 
+		log.write("[INFO] Preprocessing finished\n\n")
+		print("[INFO] Preprocessing finished\n")
+
 		return original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates
-	# except:
-	# 	print("[ERROR] in Preprocessing.py - Something went wrong for " + full_path)
-	
+	except:
+		log.write("[ERROR] Preprocessing error - Something went wrong for {}\n".format(full_path))
+		print("[ERROR] Preprocessing error - Something went wrong for " + full_path)
