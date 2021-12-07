@@ -1,34 +1,16 @@
 [INFO] PREPROCESSING STARTED
-[INFO] Starting processing C:\Users\alepa\Desktop\Inz\Skin_melanoma\to_process\4023d.bmp file...
-[INFO] Processing C:\Users\alepa\Desktop\Inz\Skin_melanoma\to_process\4023d.bmp
-[INFO] File C:\Users\alepa\Desktop\Inz\Skin_melanoma\to_process\4023d.bmp processed successfully...
+[INFO] Starting processing C:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/Nd0599ad.bmp file...
+[INFO] Processing C:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/Nd0599ad.bmp
+[INFO] File C:/Users/alepa/Desktop/Inz/Skin_melanoma/to_process/Nd0599ad.bmp processed successfully...
 [INFO] Preprocessing finished
 
 [INFO] ASSYMETRY STARTED
-[INFO] Vertical symmetry: 1
-[INFO] Horizontal symmetry: 0
+[INFO] Vertical symmetry: 0
+[INFO] Horizontal symmetry: 1
 [INFO] A after all checks: 1.3
 [INFO] Assymetry analyzing finished
 
-[INFO] BORDER ANALYZING STARTED
-[INFO] Blured border section: 0 / 8
-[INFO] B after all checks: 0.8
-[INFO] Border analyzing finished
-
-[INFO] COLOR ANALYZING STARTED
-[INFO] All pixels: 95176
-[INFO] White value: 0
-[INFO] Black value: 934
-[INFO] Blue-gray value: 0
-[INFO] Red value: 7728
-[INFO] Light brown value: 8263
-[INFO] Dark brown value: 2541
-[INFO] C after all checks: 1.5
-[INFO] Color analyzing finished
-
-[Results] Analyzing finished in 70.11 seconds
+[Results] Analyzing finished in 7.71 seconds
 [Results] A=1.3
-[Results] B=0.8
-[Results] C=1.5
-[Results] D=1.5
-[Final result] Suspicious lesion; close follow-up or excision recommended... TDS = 5.1
+[Results] B=0.0
+[Results] C=0.0

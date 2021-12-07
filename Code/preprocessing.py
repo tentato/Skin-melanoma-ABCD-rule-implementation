@@ -1,30 +1,9 @@
-import assymetry
 import cv2
-
-import numpy as np
-import argparse
-import time
-import os
-import itertools
-import math
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-import cv2
-import numpy as np
-import argparse
-import time
-import os
 import itertools
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy import ones,vstack
-from numpy.linalg import lstsq
-from random import randrange
-import matplotlib.pyplot as plt
-
+import sys
 offset = 20
 
 gaussian_blur_kernel = (29,29)
@@ -198,8 +177,9 @@ def main_preprocessing(full_path, log):
 		log.write("[INFO] File " + full_path + " processed successfully...\n")
 		print("[INFO] File " + full_path + " processed successfully...")
 
-		contours, hier = find_contours(img_closing)
-		max_contour = max(contours, key = cv2.contourArea)
+		# Not sure if needed
+		# contours, hier = find_contours(img_closing)
+		# max_contour = max(contours, key = cv2.contourArea)
 
 		log.write("[INFO] Preprocessing finished\n\n")
 		print("[INFO] Preprocessing finished\n")
