@@ -126,10 +126,10 @@ def rotate_contour(contour, angle, center):
 def main_preprocessing(full_path, log):
 	try:
 		# Close all windows from previous loop
-		log.write("[INFO] PREPROCESSING STARTED\n")
-		print("[INFO] PREPROCESSING STARTED")
-		log.write("[INFO] Starting processing " + full_path + " file...\n")
-		print("[INFO] Starting processing " + full_path + " file...")
+		log.write("[INFO] PREPROCESSING ROZPOCZĘTY\n")
+		print("[INFO] PREPROCESSING ROZPOCZĘTY")
+		log.write("[INFO] Analiza pliku " + full_path + "\n")
+		print("[INFO] Analiza pliku " + full_path)
 		cv2.destroyAllWindows()
 
 		# Read image
@@ -137,8 +137,8 @@ def main_preprocessing(full_path, log):
 		img = read_image(full_path)
 
 		# Log
-		log.write("[INFO] Processing " + full_path + "\n")
-		print("[INFO] Processing " + full_path)
+		log.write("[INFO] Pomyślnie wczytano plik " + full_path + "\n")
+		print("[INFO] Pomyślnie wczytano plik " + full_path)
 
 		# Copy image
 		original_img = img.copy()
@@ -163,8 +163,8 @@ def main_preprocessing(full_path, log):
 		if len(contours) > 0:
 			ROI_img, max_contour, rectangle_coordinates, img_closing = bounding_box(contours, img_closing, img)
 		else:
-			log.write("[INFO] No contours found\n")
-			print("[INFO] No contours found")
+			log.write("[INFO] Nie znaleziono kontur zmiany\n")
+			print("[INFO] Nie znaleziono kontur zmiany")
 
 		save_img(dir_out+"1 Original.jpg", original_img)
 		save_img(dir_out+"2 Gray.jpg", img_gray)
@@ -174,17 +174,17 @@ def main_preprocessing(full_path, log):
 		save_img(dir_out+"6 ROI img.jpg", ROI_img)
 
 		#Log
-		log.write("[INFO] File " + full_path + " processed successfully...\n")
-		print("[INFO] File " + full_path + " processed successfully...")
+		log.write("[INFO] Plik " + full_path + " przetworzono pomyślnie...\n")
+		print("[INFO] Plik " + full_path + " przetworzono pomyślnie...")
 
 		# Not sure if needed
 		# contours, hier = find_contours(img_closing)
 		# max_contour = max(contours, key = cv2.contourArea)
 
-		log.write("[INFO] Preprocessing finished\n\n")
-		print("[INFO] Preprocessing finished\n")
+		log.write("[INFO] Preprocessing zakończony\n\n")
+		print("[INFO] Preprocessing zakończony\n")
 
 		return original_img, img_gray, gauss_img, img_thresh, img_closing, ROI_img, max_contour, rectangle_coordinates
 	except:
-		log.write("[ERROR] Preprocessing error - Something went wrong for {}\n".format(full_path))
-		print("[ERROR] Preprocessing error - Something went wrong for " + full_path)
+		log.write("[ERROR] Błąd preprocessingu - nieoczekiwany błąd przetwarzania dla pliku {}\n".format(full_path))
+		print("[ERROR] Błąd preprocessingu - nieoczekiwany błąd przetwarzania dla pliku " + full_path)

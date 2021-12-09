@@ -32,15 +32,15 @@ if __name__=="__main__":
         # C = color.main_color(original_img, max_contour, log_file)
         end = time.time()
 
-        print("[Results] Analyzing finished in", round(end-start, 2), " seconds")
-        print("[Results] A=", round(A, 1))
-        print("[Results] B=", round(B, 1))
-        print("[Results] C=", round(C, 1))
+        print("[Wyniki] Analiza zakończona w czasie ", round(end-start, 2), " sekund")
+        print("[Wyniki] A=", round(A, 1))
+        print("[Wyniki] B=", round(B, 1))
+        print("[Wyniki] C=", round(C, 1))
         print("")
-        log_file.write("[Results] Analyzing finished in {} seconds\n".format(round(end-start, 2)))
-        log_file.write("[Results] A={}\n".format(round(A, 1)))
-        log_file.write("[Results] B={}\n".format(round(B, 1)))
-        log_file.write("[Results] C={}\n".format(round(C, 1)))
+        log_file.write("[Wyniki] Analiza zakończona w czasie {} sekund\n".format(round(end-start, 2)))
+        log_file.write("[Wyniki] A={}\n".format(round(A, 1)))
+        log_file.write("[Wyniki] B={}\n".format(round(B, 1)))
+        log_file.write("[Wyniki] C={}\n".format(round(C, 1)))
 
         log_file.close()
 

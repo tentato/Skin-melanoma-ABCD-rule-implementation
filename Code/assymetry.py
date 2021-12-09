@@ -143,8 +143,8 @@ def main_assymetry(contour, center, log, imgTBD):
 	try:
 		A = 2
 
-		log.write("[INFO] ASSYMETRY STARTED\n")
-		print("[INFO] ASSYMETRY STARTED")
+		log.write("[INFO] ANALIZA ASYMETRII ROZPOCZĘTA\n")
+		print("[INFO] ANALIZA ASYMETRII ROZPOCZĘTA")
 
 		### Peparing 
 		x_vertical_line = find_vertical_line(center)
@@ -165,8 +165,8 @@ def main_assymetry(contour, center, log, imgTBD):
 			alpha = alpha - 90
 			copy_contour = preprocessing.rotate_contour(copy_contour, alpha, center)
 
-		cv2.drawContours(imgTBD, [copy_contour], 0, (0, 255, 250), 1)
-		preprocessing.show_image("Rotate ", imgTBD)
+		# cv2.drawContours(imgTBD, [copy_contour], 0, (0, 255, 250), 1)
+		# preprocessing.show_image("Rotate ", imgTBD)
 
 		### Vertical symetry check
 		min_y_pixel, max_y_pixel = find_extreme_vertical_pixels(x_vertical_line, copy_contour)	
@@ -187,8 +187,8 @@ def main_assymetry(contour, center, log, imgTBD):
 
 		a_vertical = analyze_ratio_array(ratio_array)
 		A = A - a_vertical
-		log.write("[INFO] Vertical symmetry: {}\n".format(a_vertical))
-		print("[INFO] Vertical symmetry: ", a_vertical)
+		log.write("[INFO] Symmetria wzdłuż dłuższej osi pionowej: {}\n".format(a_vertical))
+		print("[INFO] Symmetria wzdłuż osi pionowej: ", a_vertical)
 
 
 		### Horizontal symetry check
@@ -209,18 +209,18 @@ def main_assymetry(contour, center, log, imgTBD):
 			ratio_array.append(ratio)
 
 		a_horizontal = analyze_ratio_array(ratio_array)
-		log.write("[INFO] Horizontal symmetry: {}\n".format(a_horizontal))
-		print("[INFO] Horizontal symmetry: ", a_horizontal)
+		log.write("[INFO] Symmetria wzdłuż osi poziomej: {}\n".format(a_horizontal))
+		print("[INFO] Symmetria wzdłuż osi poziomej: ", a_horizontal)
 		A = A - a_horizontal
 
 		A = A*1.3
-		log.write("[INFO] A after all checks: {}\n".format(A))
-		print("[INFO] A after all checks: ", A)
+		log.write("[INFO] Wartość A po analizie: {}\n".format(A))
+		print("[INFO] Wartość A po analizie: ", A)
 
-		log.write("[INFO] Assymetry analyzing finished\n\n")
-		print("[INFO] Assymetry analyzing finished\n")
+		log.write("[INFO] Analiza asymetrii zakończona\n\n")
+		print("[INFO] Analiza asymetrii zakończona\n")
 
 		return A
 	except:
-		log.write("[ERROR] Unhandled assymmetry analyzing error - something went wrong\n")
-		print("[ERROR] Unhandled assymmetry analyzing error - something went wrong")
+		log.write("[ERROR] Nieoczekiwany błąd analizy asymetrii\n")
+		print("[ERROR] Nieoczekiwany błąd analizy asymetrii")

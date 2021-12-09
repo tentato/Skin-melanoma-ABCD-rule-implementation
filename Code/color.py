@@ -52,10 +52,10 @@ def check_white_color(img, pixels_inside_cnt, pixels_number, log):
 	else:
 		white_val = 0
 
-	log.write("[INFO] All pixels: {}\n".format(pixels_number))
-	print("[INFO] All pixels: ", pixels_number)
-	log.write("[INFO] White value: {}\n".format(count))
-	print("[INFO] White value: ", count)
+	log.write("[INFO] Liczba wszystkich pikseli: {}\n".format(pixels_number))
+	print("[INFO] Liczba wszystkich pikseli: ", pixels_number)
+	log.write("[INFO] Białe: {}\n".format(count))
+	print("[INFO] Białe: ", count)
 	return white_val
 
 def check_black_color(img, pixels_inside_cnt, pixels_number, log):
@@ -73,8 +73,8 @@ def check_black_color(img, pixels_inside_cnt, pixels_number, log):
 	else:
 		black_val = 0
 
-	log.write("[INFO] Black value: {}\n".format(count))
-	print("[INFO] Black value: ", count)
+	log.write("[INFO] Czarne: {}\n".format(count))
+	print("[INFO] Czarne: ", count)
 	return black_val
 
 def check_red_color(img, pixels_inside_cnt, pixels_number, log):
@@ -99,8 +99,8 @@ def check_red_color(img, pixels_inside_cnt, pixels_number, log):
 	else:
 		red_val = 0
 
-	log.write("[INFO] Red value: {}\n".format(count))
-	print("[INFO] Red value: ", count)
+	log.write("[INFO] Czerwone: {}\n".format(count))
+	print("[INFO] Czerwone: ", count)
 	return red_val
 
 def check_blue_gray_color(img, pixels_inside_cnt, pixels_number, log):
@@ -120,8 +120,8 @@ def check_blue_gray_color(img, pixels_inside_cnt, pixels_number, log):
 	else:
 		blue_gray_val = 0
 
-	log.write("[INFO] Blue-gray value: {}\n".format(count))
-	print("[INFO] Blue-gray value: ", count)
+	log.write("[INFO] Niebiesko-szare: {}\n".format(count))
+	print("[INFO] Niebiesko-szare: ", count)
 	return blue_gray_val
 
 def check_light_brown_color(img, pixels_inside_cnt, pixels_number, log):
@@ -141,8 +141,8 @@ def check_light_brown_color(img, pixels_inside_cnt, pixels_number, log):
 	else:
 		light_brown_val = 0
 
-	log.write("[INFO] Light brown value: {}\n".format(count))
-	print("[INFO] Light brown value: ", count)
+	log.write("[INFO] Jasnobrązowe: {}\n".format(count))
+	print("[INFO] Jasnobrązowe: ", count)
 	return light_brown_val
 
 def check_dark_brown_color(img, pixels_inside_cnt, pixels_number, log):
@@ -162,8 +162,8 @@ def check_dark_brown_color(img, pixels_inside_cnt, pixels_number, log):
 	else:
 		dark_brown_val = 0
 
-	log.write("[INFO] Dark brown value: {}\n".format(count))
-	print("[INFO] Dark brown value: ", count)
+	log.write("[INFO] Ciemnobrązowe: {}\n".format(count))
+	print("[INFO] Ciemnobrązowe: ", count)
 	return dark_brown_val
 
 #############################
@@ -173,8 +173,8 @@ def check_dark_brown_color(img, pixels_inside_cnt, pixels_number, log):
 def main_color(img, cnt, log):
 	try:
 		C = 0.0
-		log.write("[INFO] COLOR ANALYZING STARTED\n")
-		print("[INFO] COLOR ANALYZING STARTED")
+		log.write("[INFO] ANALIZA KOLORU ROZPOCZĘTA\n")
+		print("[INFO] ANALIZA KOLORU ROZPOCZĘTA")
 
 		pixels_inside_cnt, pixels_number = find_pixels_inside_contour(img, cnt)
 
@@ -203,12 +203,12 @@ def main_color(img, cnt, log):
 		dark_brown = check_dark_brown_color(copy_img, pixels_inside_cnt, pixels_number, log)
 
 		C = (white + black + red + blue_gray + light_brown + dark_brown) * 0.5
-		log.write("[INFO] C after all checks: {}\n".format(C))
-		print("[INFO] C after all checks: ", C)
+		log.write("[INFO] Wartość C po analizie: {}\n".format(C))
+		print("[INFO] Wartość C po analizie: ", C)
 
-		log.write("[INFO] Color analyzing finished\n\n")
-		print("[INFO] Color analyzing finished\n")
+		log.write("[INFO] Analiza koloru zakończona\n\n")
+		print("[INFO] Analiza koloru zakończona\n")
 		return C
 	except:
-		log.write("[ERROR] Unhandled color analyzing error - something went wrong\n")
-		print("[ERROR] Unhandled color analyzing error - something went wrong")
+		log.write("[ERROR] Nieoczekiwany błąd analizy koloru\n")
+		print("[ERROR] Nieoczekiwany błąd analizy koloru")

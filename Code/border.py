@@ -60,8 +60,8 @@ def main_border(img, center, contours, log):
 		B = 0.0
 		b = 0.0
 		b_temp = 0.0
-		log.write("[INFO] BORDER ANALYZING STARTED\n")
-		print("[INFO] BORDER ANALYZING STARTED")
+		log.write("[INFO] ANALIZA GRANICY ROZPOCZĘTA\n")
+		print("[INFO] ANALIZA GRANICY ROZPOCZĘTA")
 		angle = 45
 
 
@@ -91,16 +91,16 @@ def main_border(img, center, contours, log):
 			b += b_temp
 			angle += 45
 		
-		log.write("[INFO] Blured border section: {} / 8\n".format(int(8 - b)))
-		print("[INFO] Blured border section: ", int(8 - b), "/ 8")
+		log.write("[INFO] Liczba rozmytych części granicy: {} / 8\n".format(int(8 - b)))
+		print("[INFO] Liczba rozmytych części granicy: ", int(8 - b), "/ 8")
 
 		B = b * 0.1
-		log.write("[INFO] B after all checks: {}\n".format(B))
-		print("[INFO] B after all checks: ", B)
+		log.write("[INFO] Wartość B po analizie: {}\n".format(B))
+		print("[INFO] Wartość B po analizie: ", B)
 
-		log.write("[INFO] Border analyzing finished\n\n")
-		print("[INFO] Border analyzing finished\n")
+		log.write("[INFO] Analiza granicy zakończona\n\n")
+		print("[INFO] Analiza granicy zakończona\n")
 		return B
 	except:
-		print("[ERROR] Unhandled border analyzing error - something went wrong\n")
-		log.write("[ERROR] Unhandled border analyzing error - something went wrong\n")
+		print("[ERROR] Nieoczekiwany błąd analizy granicy\n")
+		log.write("[ERROR] Nieoczekiwany błąd analizy granicy\n")
